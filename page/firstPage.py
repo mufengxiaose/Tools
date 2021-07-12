@@ -7,19 +7,20 @@ import tkinter
 from utils.firstPageFun import *
 window = tkinter.Tk()
 window.title("adb工具")
-window.geometry('1100x500+10+10') #页面大小
+window.geometry('900x500+10+10') #页面大小
 
 def deviceConnect():    #显示设备连接状态
     deviceText.delete(1.0, tkinter.END)
     deviceText.insert(1.0, getDevices())
-label1 = tkinter.Label(window, text="设备状态展示", width=20, height=1, fg='blue', font='Helvetica -16')
-label1.place(x=0, y=1, anchor='nw')
-deviceText = tkinter.Text(window, width=20, height=1, fg='blue', font='Helvetica -16')
-deviceText.place(x=100, y=1, anchor='nw')
+label1 = tkinter.Label(window, text="设备状态展示", width=10, height=1, fg='blue', font='Helvetica -16')
+label1.place(x=0, y=9, anchor='nw')
+# label1.grid(row=0, column=1)
+deviceText = tkinter.Text(window, width=30, height=1.4, bd=2, fg='blue', font='Helvetica -16')
+deviceText.place(x=100, y=9, anchor='nw')
 
 #更新设备信息
 updateBtn = tkinter.Button(window, text="查看设备", command=deviceConnect, bd=2, width=10, font='Helvetica -16')
-updateBtn.place(x=200, y=1, anchor='nw')
+updateBtn.place(x=400, y=1, anchor='nw')
 #设置测服
 testBtn = tkinter.Button(window, text="切换测服", bd=2, width=10, command=set_test, font='Helvetica -16')
 testBtn.place(x=1, y=40, anchor='nw')
