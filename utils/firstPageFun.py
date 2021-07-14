@@ -7,6 +7,7 @@ import os, sys
 import subprocess
 import time
 import datetime
+import shutil
 set_file = "/usr/lib"
 time_stamp = '{0:%Y-%m-%d-%M-%H-%M}'.format(datetime.datetime.now())
 
@@ -24,51 +25,54 @@ def getDevices():
         status = status.replace("List of devices attached", "").strip()
     return status
 def set_test():  #测服
-    file = "adb push" + " " + "../adbTools/so/beta/libwyzefdk.so" + " " + set_request_file
+    file = "adb push" + " " + "../Tools/so/beta/libwyzefdk.so" + " " + set_file
     setTest = runCmd(file)
     print(setTest)
     return setTest
 
 def set_beta():  #beta切换
-    file = "adb push" + " " + "../adbTools/so/beta/libwyzefdk.so" + " " + set_request_file
+    file = "adb push" + " " + "../Tools/so/beta/libwyzefdk.so" + " " + set_file
     setBeat = runCmd(file)
     print(setBeat)
     return setBeat
 
 def set_pro():  #正服切换
-    file = "adb push" + " " + "../adbTools/so/product/libwyzefdk.so" + " " + set_request_file
+    file = "adb push" + " " + "../Tools/so/product/libwyzefdk.so" + " " + set_file
     setPro = runCmd(file)
     print(setPro)
     return setPro
 
 def get_log():  #拉取设备日志
-    file = "adb pull /mnt/UDISK/log" + " " + "../adbTools/log/" + str(time_stamp)
+    file = "adb pull /mnt/UDISK/log" + " " + "../Tools/log/" + str(time_stamp)
     getLog = runCmd(file)
     # print(getLog)
     return getLog
 
 def get_id_key(): #获取设备id、key
-    file = "adb pull /mnt/SNN/ULI/factory" + " " + "../adbTools/deviceIdKey"
+    file = "adb pull /mnt/SNN/ULI/factory" + " " + r"..\Tools\data\deviceID"
     getIdKey = runCmd(file)
-    # print(getIdKey)
+    print(getIdKey)
     time.sleep(1)
-    f_Id = open(r'..\adbTools\deviceIdKey\device_id.txt')
-    # f_key = open(r'..\adbTools\deviceIdKey\product_key.txt')
-    IdStatus.set(f_Id.read())
-    f_Id.close()
-    time.sleep(3)
-    delcet = shutil.rmtree(r'..\adbTools\deviceIdKey\factory')
-    return getIdKey, delcet
-
+    try:
+        f_Id = open(r'..\Tools\data\deviceID\factory\device_id.txt')      #id
+        # f_key = open(r'..\Tools\deviceIdKey\product_key.txt')     #key
+        # delcet = shutil.rmtree(r'..\Tools\deviceIdKey\factory')
+        # print(f_Id.read())
+        return f_Id.read()
+    except Exception as e:
+        return "获取失败，请确认设备是否连接"
 def get_fkd_version():  #获取设备fdk版本
-    p = runCmd('adb pull /mnt/UDISK/andon/logFdk/FDKVersion' + ' ' + '../adbTools/version/')
-    time.sleep(2)
-    f = open(r'..\adbTools\version\FDKVersion', 'r')
-    fdkStatus.set(f.read())
-    f.close()
-    time.sleep(3)
-    delect = os.remove(r'..\adbTools\version\FDKVersion')
-    return p, delect
+    file = 'adb pull /mnt/UDISK/andon/logFdk/FDKVersion' + ' ' + r'..\Tools\data\fdkVersion'
+    p = runCmd(file)
+    print(p)
+    time.sleep(1)
+    try:
+        f = open(r'..\Tools\data\fdkVersion\FDKVersion', 'r')
+        # print(f.read())
+        # delect = os.remove(r'..\Tools\version\FDKVersion')
+        return f.read()
+    except Exception as e:
+        return "获取失败，请重试"
 
 def set_id():
     pass
@@ -86,3 +90,20 @@ def updateFaile():  #设备升级失败修复
     print(p)
     return p, subprocess.Popen('adb reboot')
 
+def rmFile():
+    pass
+
+# def search(root, target):
+#     items = os.listdir(root)
+#     for item in items:
+#         path = os.path.join(root, item)
+#         if os.path.isdir(path):
+#             print('[-]', path)
+#             search(path, target)
+#         elif path.split('/')[-1] == target:
+#             print('[+]', path)
+#         else:
+#             print('[!]', path)
+#
+# if __name__ == '__main__':
+#     search('E:\code\Tools\data', '')
