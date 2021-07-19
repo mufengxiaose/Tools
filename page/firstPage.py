@@ -5,6 +5,7 @@
 # @File : firstPage.py
 import tkinter
 from utils.firstPageFun import *
+from page import secPage
 window = tkinter.Tk()
 window.title("adb工具")
 window.geometry('900x500+10+10')#页面大小
@@ -65,3 +66,8 @@ rebootBtn.place(x=1, y=160, anchor='nw')
 #升级失败重置设备
 updateFaileBtn = tkinter.Button(window, text='升级失败重置设备', bd=2, width=15, command=updateFaile, font='Helvetica -16')
 updateFaileBtn.place(x=1, y=400, anchor='nw')
+
+#测试第二页
+secBtn = tkinter.Button(window, text='下一页', command=secPage.scePage)
+secBtn.place(x=1, y=450, anchor='nw')
+

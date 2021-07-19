@@ -51,26 +51,25 @@ def get_log():  #拉取设备日志
 def get_id_key(): #获取设备id、key
     file = "adb pull /mnt/SNN/ULI/factory" + " " + r"..\Tools\data\deviceID"
     getIdKey = runCmd(file)
-    print(getIdKey)
-    time.sleep(1)
+    # print(getIdKey)
+    # time.sleep(1)
     try:
-        f_Id = open(r'..\Tools\data\deviceID\factory\device_id.txt')      #id
+        deviceId = open(r'..\Tools\data\111.txt', 'r')      #id
         # f_key = open(r'..\Tools\deviceIdKey\product_key.txt')     #key
-        # delcet = shutil.rmtree(r'..\Tools\deviceIdKey\factory')
-        # print(f_Id.read())
-        return f_Id.read()
+        file = '../Tools/data/deviceID/factory/' + '*.txt'
+        return deviceId.read(), deviceId.close(), os.remove(file)
     except Exception as e:
         return "获取失败，请确认设备是否连接"
 def get_fkd_version():  #获取设备fdk版本
     file = 'adb pull /mnt/UDISK/andon/logFdk/FDKVersion' + ' ' + r'..\Tools\data\fdkVersion'
     p = runCmd(file)
     print(p)
-    time.sleep(1)
+    # time.sleep(1)
     try:
-        f = open(r'..\Tools\data\fdkVersion\FDKVersion', 'r')
+        f = open(r'..\Tools\data\fdkVersion', 'r')
         # print(f.read())
         # delect = os.remove(r'..\Tools\version\FDKVersion')
-        return f.read()
+        return f.read(), f.close(), os.remove(r'..\Tools\data\fdkVersion')
     except Exception as e:
         return "获取失败，请重试"
 
@@ -90,9 +89,6 @@ def updateFaile():  #设备升级失败修复
     print(p)
     return p, subprocess.Popen('adb reboot')
 
-def rmFile():
-    pass
-
 # def search(root, target):
 #     items = os.listdir(root)
 #     for item in items:
@@ -105,5 +101,15 @@ def rmFile():
 #         else:
 #             print('[!]', path)
 #
-# if __name__ == '__main__':
-#     search('E:\code\Tools\data', '')
+def del_file(path, swith):
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if name.endswith(swith):
+                os.remove(os.path.join(root, name))
+                print("Delete File: " + os.path.join(root, name))
+
+
+if __name__ == '__main__':
+    # search('E:\code\Tools\data', '')
+    path = r'..Tools\data\deviceID'
+    del_file(path, '.txt')
