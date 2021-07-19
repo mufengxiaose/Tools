@@ -5,7 +5,7 @@
 # @File : secPage.py
 
 import tkinter as tk
-
+from utils.secondPageFun import *
 class scePage(object):
     def __init__(self):
         self.window = tk.Tk()
@@ -14,8 +14,8 @@ class scePage(object):
 
     # def screenShot(self):
     #     print("截图")
-        shotbtn = tk.Button(self.window, text="截图")
+        shotbtn = tk.Button(self.window, text="截图", command=commonFun().screenShot)
         shotbtn.place(x=1, y=1, anchor='nw')
     # 取设备日志
-        logBtn = tk.Button(self.window, text='拉日志')
+        logBtn = tk.Button(self.window, text='拉日志', command=commonFun().pullLog)
         logBtn.place(x=1, y=30, anchor='nw')

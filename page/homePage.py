@@ -23,6 +23,4 @@ class homePage(object):
 
     def demoBtn(self):
         btn = tk.Button(self.window, text='demo').pack()
-#
-# demo.demoPage()
-# homePage()
+

@@ -43,7 +43,7 @@ def set_pro():  #正服切换
     return setPro
 
 def get_log():  #拉取设备日志
-    file = "adb pull /mnt/UDISK/log" + " " + "../Tools/log/" + str(time_stamp)
+    file = "adb pull /mnt/UDISK/log" + " " + "../Tools/log/" + str(time_stamp) + '.log'
     getLog = runCmd(file)
     # print(getLog)
     return getLog
@@ -55,12 +55,12 @@ def get_id_key(): #获取设备id、key
     # time.sleep(1)
     try:
         deviceId = open(r'data/deviceID/factory/device_id.txt', 'r')      #id
-        deviceKey = open(r'data/deviceID/factory/product_key.txt', 'r')     #key
+        # deviceKey = open(r'data/deviceID/factory/product_key.txt', 'r')     #key
         file = 'data/deviceID/factory/device_id.txt'
         return deviceId.read(), deviceId.close(), os.remove(file)
         # return deviceKey.read(), deviceKey.close()
     except Exception as e:
-        return "获取失败，请确认设备是否连接"
+        return "获取失败，设备可能没有id，请设置id"
 def get_fkd_version():  #获取设备fdk版本
     file = 'adb pull /mnt/UDISK/andon/logFdk/FDKVersion' + ' ' + r'..\Tools\data\fdkVersion'
     p = runCmd(file)
@@ -90,18 +90,6 @@ def updateFaile():  #设备升级失败修复
     print(p)
     return p, subprocess.Popen('adb reboot')
 
-# def search(root, target):
-#     items = os.listdir(root)
-#     for item in items:
-#         path = os.path.join(root, item)
-#         if os.path.isdir(path):
-#             print('[-]', path)
-#             search(path, target)
-#         elif path.split('/')[-1] == target:
-#             print('[+]', path)
-#         else:
-#             print('[!]', path)
-#
 def del_file(path, swith):
     for root, dirs, files in os.walk(path):
         for name in files:
