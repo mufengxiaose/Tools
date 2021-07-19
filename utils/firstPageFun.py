@@ -54,10 +54,11 @@ def get_id_key(): #获取设备id、key
     # print(getIdKey)
     # time.sleep(1)
     try:
-        deviceId = open(r'..\Tools\data\111.txt', 'r')      #id
-        # f_key = open(r'..\Tools\deviceIdKey\product_key.txt')     #key
-        file = '../Tools/data/deviceID/factory/' + '*.txt'
+        deviceId = open(r'data/deviceID/factory/device_id.txt', 'r')      #id
+        deviceKey = open(r'data/deviceID/factory/product_key.txt', 'r')     #key
+        file = 'data/deviceID/factory/device_id.txt'
         return deviceId.read(), deviceId.close(), os.remove(file)
+        # return deviceKey.read(), deviceKey.close()
     except Exception as e:
         return "获取失败，请确认设备是否连接"
 def get_fkd_version():  #获取设备fdk版本
