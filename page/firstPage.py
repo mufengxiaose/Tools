@@ -67,7 +67,5 @@ rebootBtn.place(x=1, y=160, anchor='nw')
 updateFaileBtn = tkinter.Button(window, text='升级失败重置设备', bd=2, width=15, command=updateFaile, font='Helvetica -16')
 updateFaileBtn.place(x=1, y=400, anchor='nw')
 
-#测试第二页
-secBtn = tkinter.Button(window, text='下一页', command=secPage.scePage)
-secBtn.place(x=1, y=450, anchor='nw')
+
 

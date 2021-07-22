@@ -7,8 +7,8 @@ import os, sys
 base_file =  os.path.dirname(__file__)
 sys.path.append(base_file)
 from page import firstPage
-from page import homePage
-from page import demo
+# from page import homePage
+# from page import demo
 
 firstPage.window.mainloop()
 # demo.demoPage()

@@ -25,7 +25,7 @@ def getDevices():
         status = status.replace("List of devices attached", "").strip()
     return status
 def set_test():  #测服
-    file = "adb push" + " " + "../Tools/so/beta/libwyzefdk.so" + " " + set_file
+    file = "adb push" + " " + "../Tools/so/test/libwyzefdk.so" + " " + set_file
     setTest = runCmd(file)
     print(setTest)
     return setTest
