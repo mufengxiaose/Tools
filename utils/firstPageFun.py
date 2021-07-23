@@ -6,6 +6,7 @@
 import os, sys
 import subprocess
 import time
+import csv
 import datetime
 import shutil
 set_file = "/usr/lib"
@@ -84,7 +85,7 @@ def rebootDevice():  #定义重启
     return runCmd('adb reboot')
 
 def updateFaile():  #设备升级失败修复
-    cmds = b"root\n@3I#sc$RD%xm^2S&\ntouch \mnt\UDISK\miss-upgrade/test.txt\nexit"
+    cmds = b"root\n@3I#sc$RD%xm^2S&\ntouch /mnt/UDISK/miss-upgrade/test.txt\nexit"
     p = subprocess.Popen('adb shell', stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     p.communicate(cmds)
     print(p)
@@ -97,6 +98,13 @@ def del_file(path, swith):
                 os.remove(os.path.join(root, name))
                 print("Delete File: " + os.path.join(root, name))
 
+def get_idKey():
+    with open('../data/idkey.csv', 'r') as f:
+        reader = csv.reader(f)
+        data_list = []
+        for i in reader:
+            data_list.append(i[0])
+    return data_list
 
 if __name__ == '__main__':
     # search('E:\code\Tools\data', '')

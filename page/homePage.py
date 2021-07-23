@@ -6,6 +6,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import csv
 from utils import firstPageFun
 
 window = tk.Tk()
@@ -44,6 +45,8 @@ tab1_frame5 = ttk.LabelFrame(tab1, text=" 设备fdk信息 ")
 tab1_frame5.grid(column=0, row=4, sticky='NW', padx=8, pady=4)
 tab1_frame6 = ttk.LabelFrame(tab1, text=" 重启、升级重置 ")
 tab1_frame6.grid(column=0, row=5, sticky='NW', padx=8, pady=4)
+tab1_frame7 = ttk.LabelFrame(tab1, text=" 添加设备id_key ")
+tab1_frame7.grid(column=0, row=6, sticky='W', padx=8, pady=4)
 
 label_1 = ttk.Label(tab1_frame1, text="设备名称")
 label_1.grid(column=0, row=0, sticky='W')
@@ -68,7 +71,7 @@ getLogBtn.grid(column=0, row=0, sticky='W')
 fileLabel = tk.Label(tab1_frame3, text="日志存放路径").grid(column=1, row=1, sticky='W')
 getLogFile = tk.Text(tab1_frame3, fg="blue", bd=2, width=80, height=1, font='Helvetica -16')  #查看设备fdk
 getLogFile.grid(column=0, row=1, sticky='W')
-#
+
 fdkText = tk.Text(tab1_frame4, fg="blue", bd=2, width=50, height=1, font='Helvetica -16')  #查看设备fdk
 fdkText.grid(column=1, row=0, sticky='W')
 fdkBt = tk.Button(tab1_frame4, text="fdk版本号", bd=2, width=10, command=deviceFDK, font='Helvetica -16')
@@ -78,13 +81,23 @@ IdBtn = tk.Button(tab1_frame5, text="获取设备Id", bd=2, width=10, command=de
 IdBtn.grid(column=0, row=0, sticky='E')
 IdText = tk.Text(tab1_frame5, width=50, height=1, fg='blue', font='Helvetica -16')
 IdText.grid(column=1, row=0, sticky='E')
-#
-#
+
 rebootBtn = tk.Button(tab1_frame6, text='重启设备', bd=2, width=10, command=firstPageFun.rebootDevice, font='Helvetica -16')   #重启设备
 rebootBtn.grid(column=0, row=0, sticky='E')
 updateFaileBtn = tk.Button(tab1_frame6, text='升级失败重置设备', bd=2, width=15, command=firstPageFun.updateFaile, font='Helvetica -16')   #升级失败重置设备
 updateFaileBtn.grid(column=1, row=0, sticky='E')
 
+#设置id，key
+
+
+setIdlabel = tk.Label(tab1_frame7, text='id', bd=2, font='Helvetica -16').grid(column=0, row=0, sticky='E')
+
+setIdNum = tk.StringVar()
+setIdText = ttk.Combobox(tab1_frame7, textvariable=setIdNum, state='readonly', width=30)
+setIdText['value'] = firstPageFun.get_idKey()
+setIdText.grid(row=0, column=1)
+
+setBtn = tk.Button(tab1_frame7, text='确认', bd=2, font='Helvetica -16').grid(column=1, row=2)
 #
 # """手机部分"""
 

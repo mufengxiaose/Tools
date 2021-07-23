@@ -1,11 +1,3 @@
-
-
-# -*- coding: utf-8 -*-
-# 技术支持：https://www.jianshu.com/u/69f40328d4f0
-# 技术支持 https://china-testing.github.io/
-# https://github.com/china-testing/python-api-tesing/blob/master/practices/tk2.py
-
-# CreateDate: 2018-11-27
 import tkinter as tk
 from tkinter import ttk
 from tkinter import scrolledtext
