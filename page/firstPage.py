@@ -5,7 +5,7 @@
 # @File : firstPage.py
 import tkinter
 from utils.firstPageFun import *
-from page import secPage
+
 window = tkinter.Tk()
 window.title("adb工具")
 window.geometry('900x500+10+10')#页面大小

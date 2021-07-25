@@ -4,11 +4,15 @@
 # @Author : Carl
 # @File : firstPageFun.py
 import os, sys
+base_file =  os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(base_file + '/data/setId')
+
+sys.path.append(base_file)
 import subprocess
 import time
 import csv
 import datetime
-import shutil
+# import shutil
 set_file = "/usr/lib"
 time_stamp = '{0:%Y-%m-%d-%M-%H-%M}'.format(datetime.datetime.now())
 

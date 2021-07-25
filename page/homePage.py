@@ -5,9 +5,9 @@
 # @File : homePage.py
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
-import csv
-from utils import firstPageFun
+# from tkinter import messagebox
+# import csv
+from utils.firstPageFun import *
 
 window = tk.Tk()
 window.title("测试工具")
@@ -21,17 +21,17 @@ tabControl.add(tab2, text='手机')
 tabControl.pack(expand=1, fill='both')
 
 """固件部分"""
-def deviceConnect(fun):#显示设备连接状态
+def deviceConnect():#显示设备连接状态
     deviceText.delete(1.0, tk.END)
-    # deviceText.insert(1.0, firstPageFun.getDevices())
-    deviceText.insert(1.0, fun)
+    deviceText.insert(1.0, getDevices())
+    # deviceText.insert(1.0, fun)
 def deviceID(): #driverid展示
     IdText.delete(1.0, tk.END)
-    IdText.insert(1.0, firstPageFun.get_id_key())
+    IdText.insert(1.0, get_id_key())
 
 def deviceFDK(): #fkd版本号展示
     fdkText.delete(1.0, tk.END)
-    fdkText.insert(1.0, firstPageFun.get_fkd_version())
+    fdkText.insert(1.0, get_fkd_version())
 #固件frame
 tab1_frame1 = ttk.LabelFrame(tab1, text=" 设备状态 ")
 tab1_frame1.grid(column=0, row=0, sticky='NW', padx=8, pady=4)
@@ -52,21 +52,21 @@ label_1 = ttk.Label(tab1_frame1, text="设备名称")
 label_1.grid(column=0, row=0, sticky='W')
 deviceText = tk.Text(tab1_frame1, width=30, height=1.4, bd=2, fg='blue', font='Helvetica -16')
 deviceText.grid(column=1, row=0, sticky='W')
-deviceConnect(firstPageFun.getDevices())
+deviceConnect()
 
-updateBtn = tk.Button(tab1_frame1, text="更新连接状态", command=deviceConnect(firstPageFun.getDevices()), bd=2, width=12, font='Helvetica -16')      #更新状态
+updateBtn = tk.Button(tab1_frame1, text="更新连接状态", command=deviceConnect, bd=2, width=12, font='Helvetica -16')      #更新状态
 updateBtn.grid(column=2, row=0, sticky='W')
 #服务器切换
-testBtn = tk.Button(tab1_frame2, text="切换测服", bd=2, width=10, command=firstPageFun.set_test, font='Helvetica -16')     #设置测服
+testBtn = tk.Button(tab1_frame2, text="切换测服", bd=2, width=10, command=set_test, font='Helvetica -16')     #设置测服
 testBtn.grid(column=1, row=0, sticky='W')
 
-betaBtn = tk.Button(tab1_frame2, text="切换Beta", bd=2, width=10, command=firstPageFun.set_beta, font='Helvetica -16')   #设置beta
+betaBtn = tk.Button(tab1_frame2, text="切换Beta", bd=2, width=10, command=set_beta, font='Helvetica -16')   #设置beta
 betaBtn.grid(column=2, row=0, sticky='W')
 
-proBtn = tk.Button(tab1_frame2, text="切换正服", bd=2, width=10, command=firstPageFun.set_pro, font='Helvetica -16')   #设置正服
+proBtn = tk.Button(tab1_frame2, text="切换正服", bd=2, width=10, command=set_pro, font='Helvetica -16')   #设置正服
 proBtn.grid(column=3, row=0, sticky='W')
 
-getLogBtn = tk.Button(tab1_frame3, text="获取设备日志", bd=2, width=12, command=firstPageFun.get_log, font='Helvetica -16')    #拉取设备日志
+getLogBtn = tk.Button(tab1_frame3, text="获取设备日志", bd=2, width=12, command=get_log, font='Helvetica -16')    #拉取设备日志
 getLogBtn.grid(column=0, row=0, sticky='W')
 fileLabel = tk.Label(tab1_frame3, text="日志存放路径").grid(column=1, row=1, sticky='W')
 getLogFile = tk.Text(tab1_frame3, fg="blue", bd=2, width=80, height=1, font='Helvetica -16')  #查看设备fdk
@@ -82,9 +82,9 @@ IdBtn.grid(column=0, row=0, sticky='E')
 IdText = tk.Text(tab1_frame5, width=50, height=1, fg='blue', font='Helvetica -16')
 IdText.grid(column=1, row=0, sticky='E')
 
-rebootBtn = tk.Button(tab1_frame6, text='重启设备', bd=2, width=10, command=firstPageFun.rebootDevice, font='Helvetica -16')   #重启设备
+rebootBtn = tk.Button(tab1_frame6, text='重启设备', bd=2, width=10, command=rebootDevice, font='Helvetica -16')   #重启设备
 rebootBtn.grid(column=0, row=0, sticky='E')
-updateFaileBtn = tk.Button(tab1_frame6, text='升级失败重置设备', bd=2, width=15, command=firstPageFun.updateFaile, font='Helvetica -16')   #升级失败重置设备
+updateFaileBtn = tk.Button(tab1_frame6, text='升级失败重置设备', bd=2, width=15, command=updateFaile, font='Helvetica -16')   #升级失败重置设备
 updateFaileBtn.grid(column=1, row=0, sticky='E')
 
 #设置id，key
@@ -103,15 +103,15 @@ def choose(*args):
 setIdlabel = tk.Label(tab1_frame7, text='id', bd=2, font='Helvetica -16').grid(column=0, row=0, sticky='E')
 setIdNum = tk.StringVar()
 setIdText = ttk.Combobox(tab1_frame7, textvariable=setIdNum, state='readonly', width=30)
-setIdText['value'] = firstPageFun.get_idKey()
+setIdText['value'] = get_idKey()
 setIdText.bind('<<ComboboxSelected>>', choose)
 setIdText.grid(row=0, column=1)
 
-setBtn = tk.Button(tab1_frame7, text='确认', bd=2, font='Helvetica -16', command=firstPageFun.set_id).grid(column=1, row=2)
+setBtn = tk.Button(tab1_frame7, text='确认', bd=2, font='Helvetica -16', command=set_id).grid(column=1, row=2)
 #
 # """手机部分"""
 
 
-window.mainloop()
 
-
+if __name__ == '__main__':
+    window.mainloop()
