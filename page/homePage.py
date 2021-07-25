@@ -88,16 +88,26 @@ updateFaileBtn = tk.Button(tab1_frame6, text='升级失败重置设备', bd=2, w
 updateFaileBtn.grid(column=1, row=0, sticky='E')
 
 #设置id，key
-
+def choose(*args):
+    id = setIdText.get()
+    with open(r'../data\setId\device_id.txt', 'w+') as f:
+        f.write(id)
+    print('id is: ' + id)
+    reader = csv.reader(open(r'../data/idkey.csv', 'r'))
+    for row in reader:
+        if row[0] == id:
+            with open(r'../data/setId/product_key.txt', 'w+') as f:
+                f.write(row[1])
+            print('key is:' + row[1])
 
 setIdlabel = tk.Label(tab1_frame7, text='id', bd=2, font='Helvetica -16').grid(column=0, row=0, sticky='E')
-
 setIdNum = tk.StringVar()
 setIdText = ttk.Combobox(tab1_frame7, textvariable=setIdNum, state='readonly', width=30)
 setIdText['value'] = firstPageFun.get_idKey()
+setIdText.bind('<<ComboboxSelected>>', choose)
 setIdText.grid(row=0, column=1)
 
-setBtn = tk.Button(tab1_frame7, text='确认', bd=2, font='Helvetica -16').grid(column=1, row=2)
+setBtn = tk.Button(tab1_frame7, text='确认', bd=2, font='Helvetica -16', command=firstPageFun.set_id).grid(column=1, row=2)
 #
 # """手机部分"""
 

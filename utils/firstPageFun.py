@@ -75,8 +75,14 @@ def get_fkd_version():  #获取设备fdk版本
     except Exception as e:
         return "获取失败，请重试"
 
-def set_id():
-    pass
+def set_id(*args):      #给设备添加id，key
+    file = '/mnt/SNN/ULI/factory'
+    cmds = b"root\n@3I#sc$RD%xm^2S&\nmkdir -p /mnt/SNN/ULI/factory"
+    subprocess.Popen('adb shell', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(cmds)
+    time.sleep(0.1)
+    deviceId = subprocess.Popen('adb push ../data/setId/device_id.txt ' + file)
+    deviceKye = subprocess.Popen('adb push ../E:\code\Tools\data\setId\product_key.txt' + file)
+    return deviceId, deviceKye
 
 def set_version():
     pass
@@ -98,7 +104,7 @@ def del_file(path, swith):
                 os.remove(os.path.join(root, name))
                 print("Delete File: " + os.path.join(root, name))
 
-def get_idKey():
+def get_idKey():    #展示现有idkey.csv现有id
     with open('../data/idkey.csv', 'r') as f:
         reader = csv.reader(f)
         data_list = []
