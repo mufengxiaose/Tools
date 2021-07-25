@@ -3,9 +3,12 @@
 # @Time : 2021/7/12 17:35 
 # @Author : Carl
 # @File : firstPage.py
+import os, sys
+base_file = os.getcwd()
+sys.path.append(base_file)
+# print(base_file)
 import tkinter
 from utils.firstPageFun import *
-
 window = tkinter.Tk()
 window.title("adb工具")
 window.geometry('900x500+10+10')#页面大小

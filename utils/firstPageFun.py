@@ -4,10 +4,6 @@
 # @Author : Carl
 # @File : firstPageFun.py
 import os, sys
-base_file =  os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(base_file + '/data/setId')
-
-sys.path.append(base_file)
 import subprocess
 import time
 import csv
@@ -23,7 +19,7 @@ def runCmd(str):
 #设备连接状态
 def getDevices():
     status = runCmd('adb devices').strip()
-    print(status)
+    print("设备名称" + status)
     if status == "List of devices attached":
         status = "当前无设备连接"
     else:
@@ -32,32 +28,36 @@ def getDevices():
 def set_test():  #测服
     file = "adb push" + " " + "../Tools/so/test/libwyzefdk.so" + " " + set_file
     setTest = runCmd(file)
-    print(setTest)
+    print("测服按钮")
     return setTest
 
 def set_beta():  #beta切换
     file = "adb push" + " " + "../Tools/so/beta/libwyzefdk.so" + " " + set_file
     setBeat = runCmd(file)
-    print(setBeat)
+    print("beta按钮")
     return setBeat
 
 def set_pro():  #正服切换
     file = "adb push" + " " + "../Tools/so/product/libwyzefdk.so" + " " + set_file
     setPro = runCmd(file)
-    print(setPro)
+    print("正服按钮")
     return setPro
 
 def get_log():  #拉取设备日志
+    print("获取设备日志按钮")
     file = "adb pull /mnt/UDISK/log" + " " + "../Tools/log/" + str(time_stamp) + '.log'
-    getLog = runCmd(file)
-    # print(getLog)
-    return getLog
+    runCmd(file)
+    f = os.path.abspath('../log')
+    lists = os.listdir(f)
+    lists.sort(key=lambda fn:os.path.getmtime(f + '/' + fn))
+    file_new = os.path.join(f, lists[-1])
+    print(file_new)
+    return file_new
 
 def get_id_key(): #获取设备id、key
     file = "adb pull /mnt/SNN/ULI/factory" + " " + r"..\Tools\data\deviceID"
-    getIdKey = runCmd(file)
-    # print(getIdKey)
-    # time.sleep(1)
+    runCmd(file)
+    print("点击获取设备id按钮")
     try:
         deviceId = open(r'data/deviceID/factory/device_id.txt', 'r')      #id
         # deviceKey = open(r'data/deviceID/factory/product_key.txt', 'r')     #key
@@ -68,12 +68,11 @@ def get_id_key(): #获取设备id、key
         return "获取失败，设备可能没有id，请设置id"
 def get_fkd_version():  #获取设备fdk版本
     file = 'adb pull /mnt/UDISK/andon/logFdk/FDKVersion' + ' ' + r'..\Tools\data\fdkVersion'
-    p = runCmd(file)
-    print(p)
+    runCmd(file)
+    print("获取设备fdk版本")
     # time.sleep(1)
     try:
         f = open(r'..\Tools\data\fdkVersion', 'r')
-        # print(f.read())
         # delect = os.remove(r'..\Tools\version\FDKVersion')
         return f.read(), f.close(), os.remove(r'..\Tools\data\fdkVersion')
     except Exception as e:
@@ -92,13 +91,14 @@ def set_version():
     pass
 
 def rebootDevice():  #定义重启
+    print("重启设备按钮")
     return runCmd('adb reboot')
 
 def updateFaile():  #设备升级失败修复
+    print("设备升级失败按钮")
     cmds = b"root\n@3I#sc$RD%xm^2S&\ntouch /mnt/UDISK/miss-upgrade/test.txt\nexit"
     p = subprocess.Popen('adb shell', stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     p.communicate(cmds)
-    print(p)
     return p, subprocess.Popen('adb reboot')
 
 def del_file(path, swith):
@@ -109,7 +109,9 @@ def del_file(path, swith):
                 print("Delete File: " + os.path.join(root, name))
 
 def get_idKey():    #展示现有idkey.csv现有id
-    with open('../data/idkey.csv', 'r') as f:
+    print("展示所有未启用id")
+    # with open('../data/idkey.csv', 'r') as f:
+    with open('..\Tools\idkey.csv', 'r') as f:
         reader = csv.reader(f)
         data_list = []
         for i in reader:
@@ -117,6 +119,4 @@ def get_idKey():    #展示现有idkey.csv现有id
     return data_list
 
 if __name__ == '__main__':
-    # search('E:\code\Tools\data', '')
-    path = r'..Tools\data\deviceID'
-    del_file(path, '.txt')
+    get_log()

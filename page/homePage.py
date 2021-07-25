@@ -24,7 +24,7 @@ tabControl.pack(expand=1, fill='both')
 def deviceConnect():#显示设备连接状态
     deviceText.delete(1.0, tk.END)
     deviceText.insert(1.0, getDevices())
-    # deviceText.insert(1.0, fun)
+
 def deviceID(): #driverid展示
     IdText.delete(1.0, tk.END)
     IdText.insert(1.0, get_id_key())
@@ -32,6 +32,27 @@ def deviceID(): #driverid展示
 def deviceFDK(): #fkd版本号展示
     fdkText.delete(1.0, tk.END)
     fdkText.insert(1.0, get_fkd_version())
+
+def log_file(): #定义日志获取路径
+    getLogFile.delete(1.0, tk.END)
+    getLogFile.insert(1.0, get_log())
+
+#设置id，key
+def choose(*args):
+    id = setIdText.get()
+    # with open(r'../data\setId\device_id.txt', 'w+') as f:
+    with open(r'..\Tools\device_id.txt', 'w+') as f:
+        f.write(id)
+    print('id is: ' + id)
+    # reader = csv.reader(open(r'../data/idkey.csv', 'r'))
+    reader = csv.reader(open(r'..\Tools\idkey.csv', 'r'))
+    for row in reader:
+        if row[0] == id:
+            # with open(r'../data/setId/product_key.txt', 'w+') as f:
+            with open(r'..\Tools\product_key.txt', 'w+') as f:
+                f.write(row[1])
+            print('key is:' + row[1])
+
 #固件frame
 tab1_frame1 = ttk.LabelFrame(tab1, text=" 设备状态 ")
 tab1_frame1.grid(column=0, row=0, sticky='NW', padx=8, pady=4)
@@ -66,44 +87,31 @@ betaBtn.grid(column=2, row=0, sticky='W')
 proBtn = tk.Button(tab1_frame2, text="切换正服", bd=2, width=10, command=set_pro, font='Helvetica -16')   #设置正服
 proBtn.grid(column=3, row=0, sticky='W')
 
-getLogBtn = tk.Button(tab1_frame3, text="获取设备日志", bd=2, width=12, command=get_log, font='Helvetica -16')    #拉取设备日志
+#获取日志
+getLogBtn = tk.Button(tab1_frame3, text="获取设备日志", bd=2, width=12, command=log_file, font='Helvetica -16')
 getLogBtn.grid(column=0, row=0, sticky='W')
 fileLabel = tk.Label(tab1_frame3, text="日志存放路径").grid(column=1, row=1, sticky='W')
-getLogFile = tk.Text(tab1_frame3, fg="blue", bd=2, width=80, height=1, font='Helvetica -16')  #查看设备fdk
+getLogFile = tk.Text(tab1_frame3, fg="blue", bd=2, width=80, height=1, font='Helvetica -16')
 getLogFile.grid(column=0, row=1, sticky='W')
-
-fdkText = tk.Text(tab1_frame4, fg="blue", bd=2, width=50, height=1, font='Helvetica -16')  #查看设备fdk
+# 查看设备fdk
+fdkText = tk.Text(tab1_frame4, fg="blue", bd=2, width=50, height=1, font='Helvetica -16')
 fdkText.grid(column=1, row=0, sticky='W')
 fdkBt = tk.Button(tab1_frame4, text="fdk版本号", bd=2, width=10, command=deviceFDK, font='Helvetica -16')
 fdkBt.grid(column=0, row=0, sticky='E')
-
-IdBtn = tk.Button(tab1_frame5, text="获取设备Id", bd=2, width=10, command=deviceID, font='Helvetica -16')  #显示设备id，key
+#显示设备id，key
+IdBtn = tk.Button(tab1_frame5, text="获取设备Id", bd=2, width=10, command=deviceID, font='Helvetica -16')
 IdBtn.grid(column=0, row=0, sticky='E')
 IdText = tk.Text(tab1_frame5, width=50, height=1, fg='blue', font='Helvetica -16')
 IdText.grid(column=1, row=0, sticky='E')
-
-rebootBtn = tk.Button(tab1_frame6, text='重启设备', bd=2, width=10, command=rebootDevice, font='Helvetica -16')   #重启设备
+#重启设备
+rebootBtn = tk.Button(tab1_frame6, text='重启设备', bd=2, width=10, command=rebootDevice, font='Helvetica -16')
 rebootBtn.grid(column=0, row=0, sticky='E')
 updateFaileBtn = tk.Button(tab1_frame6, text='升级失败重置设备', bd=2, width=15, command=updateFaile, font='Helvetica -16')   #升级失败重置设备
 updateFaileBtn.grid(column=1, row=0, sticky='E')
-
-#设置id，key
-def choose(*args):
-    id = setIdText.get()
-    with open(r'../data\setId\device_id.txt', 'w+') as f:
-        f.write(id)
-    print('id is: ' + id)
-    reader = csv.reader(open(r'../data/idkey.csv', 'r'))
-    for row in reader:
-        if row[0] == id:
-            with open(r'../data/setId/product_key.txt', 'w+') as f:
-                f.write(row[1])
-            print('key is:' + row[1])
-
+#固件设置id按钮部分
 setIdlabel = tk.Label(tab1_frame7, text='id', bd=2, font='Helvetica -16').grid(column=0, row=0, sticky='E')
 setIdNum = tk.StringVar()
-setIdText = ttk.Combobox(tab1_frame7, textvariable=setIdNum, state='readonly', width=30)
-setIdText['value'] = get_idKey()
+setIdText = ttk.Combobox(tab1_frame7, textvariable=setIdNum, state='readonly', width=30, value=get_idKey())
 setIdText.bind('<<ComboboxSelected>>', choose)
 setIdText.grid(row=0, column=1)
 
