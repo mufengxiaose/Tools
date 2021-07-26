@@ -8,6 +8,7 @@ import subprocess
 import time
 import csv
 import datetime
+from tkinter import messagebox
 # import shutil
 set_file = "/usr/lib"
 time_stamp = '{0:%Y-%m-%d-%M-%H-%M}'.format(datetime.datetime.now())
@@ -51,7 +52,7 @@ def get_log():  #拉取设备日志
     lists = os.listdir(f)
     lists.sort(key=lambda fn:os.path.getmtime(f + '/' + fn))
     file_new = os.path.join(f, lists[-1])
-    print(file_new)
+    # print(file_new)
     return file_new
 
 def get_id_key(): #获取设备id、key
@@ -79,12 +80,13 @@ def get_fkd_version():  #获取设备fdk版本
         return "获取失败，请重试"
 
 def set_id(*args):      #给设备添加id，key
+    messagebox.showinfo('设置id', '稍等10秒，设置id中')
     file = '/mnt/SNN/ULI/factory'
     cmds = b"root\n@3I#sc$RD%xm^2S&\nmkdir -p /mnt/SNN/ULI/factory"
     subprocess.Popen('adb shell', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(cmds)
-    time.sleep(0.1)
-    deviceId = subprocess.Popen('adb push ../data/setId/device_id.txt ' + file)
-    deviceKye = subprocess.Popen('adb push ../E:\code\Tools\data\setId\product_key.txt' + file)
+    time.sleep(5)
+    deviceId = subprocess.Popen('adb push ..\Tools\device_id.txt ' + file)
+    deviceKye = subprocess.Popen('adb push ../Tools\product_key.txt' + file)
     return deviceId, deviceKye
 
 def set_version():
