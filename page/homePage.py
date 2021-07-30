@@ -20,6 +20,10 @@ tab2 = ttk.Frame(tabControl)
 tabControl.add(tab2, text='手机')
 tabControl.pack(expand=1, fill='both')
 
+# 页面刷新方法
+def Refresh():
+    window.after(1000, Refresh)
+
 """固件部分"""
 def deviceConnect():#显示设备连接状态
     deviceText.delete(1.0, tk.END)
@@ -37,6 +41,7 @@ def log_file(): #定义日志获取路径
     getLogFile.delete(1.0, tk.END)
     getLogFile.insert(1.0, get_log())
 
+
 #设置id，key
 def choose(*args):
     id = setIdText.get()
@@ -52,6 +57,7 @@ def choose(*args):
             with open(r'..\Tools\product_key.txt', 'w+') as f:
                 f.write(row[1])
             print('key is:' + row[1])
+
 
 #固件frame
 tab1_frame1 = ttk.LabelFrame(tab1, text=" 设备状态 ")
@@ -116,10 +122,15 @@ setIdText.bind('<<ComboboxSelected>>', choose)
 setIdText.grid(row=0, column=1)
 
 setBtn = tk.Button(tab1_frame7, text='确认', bd=2, font='Helvetica -16', command=set_id).grid(column=1, row=2)
-#
+
+# window.after(1000, Refresh)
+
 # """手机部分"""
 
 
 
+
+Refresh()
 if __name__ == '__main__':
+    window.after(1000, time.time())
     window.mainloop()

@@ -11,7 +11,6 @@ import datetime
 from tkinter import messagebox
 # import shutil
 set_file = "/usr/lib"
-time_stamp = '{0:%Y-%m-%d-%M-%H-%M}'.format(datetime.datetime.now())
 
 #连接设备
 def runCmd(str):
@@ -46,13 +45,14 @@ def set_pro():  #正服切换
 
 def get_log():  #拉取设备日志
     print("获取设备日志按钮")
-    file = "adb pull /mnt/UDISK/log" + " " + "../Tools/log/" + str(time_stamp) + '.log'
+    stime = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    file = "adb pull /mnt/UDISK/log" + " " + "../Tools/log/" + stime + '.log'
     runCmd(file)
-    f = os.path.abspath('../log')
-    lists = os.listdir(f)
-    lists.sort(key=lambda fn:os.path.getmtime(f + '/' + fn))
-    file_new = os.path.join(f, lists[-1])
-    # print(file_new)
+    file1 = os.path.dirname(os.path.dirname(__file__)) + '/log'
+    lists = os.listdir(file1)
+    lists.sort(key=lambda fn: os.path.getmtime(file1 + '/' + fn))
+    file_new = os.path.join(file1, lists[-1])
+    print(file_new)
     return file_new
 
 def get_id_key(): #获取设备id、key
@@ -84,7 +84,7 @@ def set_id(*args):      #给设备添加id，key
     file = '/mnt/SNN/ULI/factory'
     cmds = b"root\n@3I#sc$RD%xm^2S&\nmkdir -p /mnt/SNN/ULI/factory"
     subprocess.Popen('adb shell', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(cmds)
-    time.sleep(5)
+    # time.sleep(5)
     deviceId = subprocess.Popen('adb push ..\Tools\device_id.txt ' + file)
     deviceKye = subprocess.Popen('adb push ../Tools\product_key.txt' + file)
     return deviceId, deviceKye
