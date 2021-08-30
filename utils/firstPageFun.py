@@ -26,22 +26,22 @@ def getDevices():
         status = status.replace("List of devices attached", "").strip()
     return status
 def set_test():  #测服
-    file = "adb push" + " " + "../Tools/so/test/libwyzefdk.so" + " " + set_file
+    file = "adb push" + " " + "..\Tools\so/FDK-Test-1.2.35/libwyzefdk.so" + " " + set_file
     setTest = runCmd(file)
     print("测服按钮")
-    return setTest
+    return setTest, "测服切换成功"
 
 def set_beta():  #beta切换
-    file = "adb push" + " " + "../Tools/so/beta/libwyzefdk.so" + " " + set_file
-    setBeat = runCmd(file)
+    file = "adb push" + " " + r"..\Tools\so\FDK-Beta-1.3.35\libwyzefdk.so" + " " + set_file
+    setBeta = runCmd(file)
     print("beta按钮")
-    return setBeat
+    return setBeta
 
 def set_pro():  #正服切换
-    file = "adb push" + " " + "../Tools/so/product/libwyzefdk.so" + " " + set_file
+    file = "adb push" + " " + "..\Tools\so\FDK-Product-1.6.35\libwyzefdk.so" + " " + set_file
     setPro = runCmd(file)
     print("正服按钮")
-    return setPro
+    return setPro, "正服切换成功"
 
 def get_log():  #拉取设备日志
     print("获取设备日志按钮")
@@ -80,14 +80,20 @@ def get_fkd_version():  #获取设备fdk版本
         return "获取失败，请重试"
 
 def set_id(*args):      #给设备添加id，key
-    messagebox.showinfo('设置id', '稍等10秒，设置id中')
+    # messagebox.showinfo('设置id', '稍等10秒，设置id中')
+    print(datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S"))
     file = '/mnt/SNN/ULI/factory'
-    cmds = b"root\n@3I#sc$RD%xm^2S&\nmkdir -p /mnt/SNN/ULI/factory"
-    subprocess.Popen('adb shell', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(cmds)
-    # time.sleep(5)
-    deviceId = subprocess.Popen('adb push ..\Tools\device_id.txt ' + file)
-    deviceKye = subprocess.Popen('adb push ../Tools\product_key.txt' + file)
-    return deviceId, deviceKye
+    cmds = b"root\n\n@3I#sc$RD%xm^2S&\nmkdir -p /mnt/SNN/ULI/factory\n"
+    p = subprocess.Popen('adb shell', stdin=subprocess.PIPE)
+    time.sleep(0.1)
+    p.communicate(cmds)
+    p.kill()
+    # p.wait()
+
+    # deviceId = subprocess.Popen('adb push ..\Tools\device_id.txt' + ' ' + file)
+    # deviceKye = subprocess.Popen('adb push ..\Tools\product_key.txt' + ' ' + file)
+    print(datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S"))
+    # return deviceId, deviceKye
 
 def set_version():
     pass
@@ -98,10 +104,21 @@ def rebootDevice():  #定义重启
 
 def updateFaile():  #设备升级失败修复
     print("设备升级失败按钮")
-    cmds = b"root\n@3I#sc$RD%xm^2S&\ntouch /mnt/UDISK/miss-upgrade/test.txt\nexit"
-    p = subprocess.Popen('adb shell', stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    p.communicate(cmds)
-    return p, subprocess.Popen('adb reboot')
+    # cmds = b"root\n@3I#sc$RD%xm^2S&\ntouch /mnt/UDISK/miss-upgrade/test.txt\nexit"
+    # p = subprocess.Popen('adb shell', stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    # p.communicate(cmds)
+    # return p, subprocess.Popen('adb reboot')
+    cmds = [
+        "root",
+        "@3I#sc$RD%xm^2S&",
+        "touch /mnt/UDISK/miss-upgrade/test.txt",
+        "exit"
+    ]
+    obj = subprocess.Popen("adb shell", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    info = obj.communicate(("\n".join(cmds) + "\n").encode("utf-8"))
+    for item in info:
+        if item:
+            print(item.decode('gbk'))
 
 def del_file(path, swith):
     for root, dirs, files in os.walk(path):
