@@ -8,10 +8,11 @@ import subprocess
 import time
 import csv
 import datetime
-from tkinter import messagebox
-# import shutil
-set_file = "/usr/lib"
 
+
+
+
+set_file = "/usr/lib"
 #连接设备
 def runCmd(str):
     p = os.popen(str)
@@ -22,60 +23,65 @@ def getDevices():
     print("设备名称" + status)
     if status == "List of devices attached":
         status = "当前无设备连接"
+    elif "offline" in status:
+        subprocess.Popen('adb kill-server')
+        subprocess.Popen('adb devices')
     else:
         status = status.replace("List of devices attached", "").strip()
     return status
-def set_test():  #测服
-    file = "adb push" + " " + "..\Tools\so/FDK-Test-1.2.35/libwyzefdk.so" + " " + set_file
-    setTest = runCmd(file)
-    print("测服按钮")
-    return setTest, "测服切换成功"
-
-def set_beta():  #beta切换
-    file = "adb push" + " " + r"..\Tools\so\FDK-Beta-1.3.35\libwyzefdk.so" + " " + set_file
-    setBeta = runCmd(file)
-    print("beta按钮")
-    return setBeta
-
-def set_pro():  #正服切换
-    file = "adb push" + " " + "..\Tools\so\FDK-Product-1.6.35\libwyzefdk.so" + " " + set_file
-    setPro = runCmd(file)
-    print("正服按钮")
-    return setPro, "正服切换成功"
 
 def get_log():  #拉取设备日志
+    file_path = os.getcwd()
+    test_file = file_path + r'\firmware_log'
+    if os.path.exists(test_file): #判断文件路径是否存在，不存在则创建
+        print('exist')
+    else:
+        os.mkdir(test_file)
     print("获取设备日志按钮")
     stime = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    file = "adb pull /mnt/UDISK/log" + " " + "../Tools/log/" + stime + '.log'
+    file = "adb pull /mnt/UDISK/log" + " " + test_file + '/' + stime + '.log'
     runCmd(file)
-    file1 = os.path.dirname(os.path.dirname(__file__)) + '/log'
-    lists = os.listdir(file1)
-    lists.sort(key=lambda fn: os.path.getmtime(file1 + '/' + fn))
-    file_new = os.path.join(file1, lists[-1])
+    # file1 = os.path.dirname(os.path.dirname(__file__)) + '/log'
+    lists = os.listdir(test_file)
+    lists.sort(key=lambda fn: os.path.getmtime(test_file + '/' + fn))
+    file_new = os.path.join(test_file, lists[-1])
     print(file_new)
     return file_new
 
 def get_id_key(): #获取设备id、key
-    file = "adb pull /mnt/SNN/ULI/factory" + " " + r"..\Tools\data\deviceID"
+    file_path = os.getcwd()
+    test_file = file_path + r'\id'
+    if os.path.exists(test_file): #判断文件路径是否存在，不存在则创建
+        print('exist')
+    else:
+        os.mkdir(test_file)
+    file = "adb pull /mnt/SNN/ULI/factory" + " " + test_file
     runCmd(file)
     print("点击获取设备id按钮")
     try:
-        deviceId = open(r'data/deviceID/factory/device_id.txt', 'r')      #id
-        # deviceKey = open(r'data/deviceID/factory/product_key.txt', 'r')     #key
-        file = 'data/deviceID/factory/device_id.txt'
-        return deviceId.read(), deviceId.close(), os.remove(file)
+        deviceId = open(test_file + r'/factory/device_id.txt', 'r')      #id
+        # file = 'data/deviceID/factory/device_id.txt'
+        rm_file = test_file + r'/factory/device_id.txt'
+        return deviceId.read(), deviceId.close(), os.remove(rm_file)
         # return deviceKey.read(), deviceKey.close()
     except Exception as e:
         return "获取失败，设备可能没有id，请设置id"
 def get_fkd_version():  #获取设备fdk版本
-    file = 'adb pull /mnt/UDISK/andon/logFdk/FDKVersion' + ' ' + r'..\Tools\data\fdkVersion'
-    runCmd(file)
+    file_path = os.getcwd()
+    test_file = file_path + r'\fdk'
+    if os.path.exists(test_file): #判断文件路径是否存在，不存在则创建
+        print('exist')
+    else:
+        os.mkdir(test_file)
+    adb_pull = 'adb pull /mnt/UDISK/andon/logFdk/FDKVersion' + ' ' + test_file
+    runCmd(adb_pull)
     print("获取设备fdk版本")
     # time.sleep(1)
     try:
-        f = open(r'..\Tools\data\fdkVersion', 'r')
+        f = open(test_file + r'\FDKVersion', 'r')
+        print(test_file + r'\FDKVersion')
         # delect = os.remove(r'..\Tools\version\FDKVersion')
-        return f.read(), f.close(), os.remove(r'..\Tools\data\fdkVersion')
+        return f.read(), f.close(), os.remove(test_file + r'\FDKVersion')
     except Exception as e:
         return "获取失败，请重试"
 
@@ -138,4 +144,5 @@ def get_idKey():    #展示现有idkey.csv现有id
     return data_list
 
 if __name__ == '__main__':
-    get_log()
+    # get_log()
+    get_fkd_version()

@@ -1,0 +1,14 @@
+2021/08/30,07:03:40.634579[LogKimbo][LogNormal][CLog] logControl has cut down!
+2021/08/30,07:03:40.637378[LogKimbo][LogNormal][Sys_Monitor] Finish copy path
+2021/08/27,07:01:31.598395[LogGareth][LogErro][Sys_Monitor] ----->>fork RobotApp ok0308
+
+2021/08/27,07:01:31.598553[LogGareth][LogNormal][Sys_Monitor] proName:/usr/sbin/RobotApp
+2021/08/27,07:01:32.128031[LogGareth][LogErro][Sys_Monitor] ----->>fork AuxCtrl ok
+
+2021/08/27,07:01:32.128193[LogGareth][LogNormal][Sys_Monitor] proName:/usr/sbin/AuxCtrl
+2021/08/30,07:03:42.232800[LogGareth][LogErro][Sys_Monitor] ----->>fork everest-server ok  
+
+2021/08/30,07:03:42.232983[LogGareth][LogErro][Sys_Monitor] proName:/usr/sbin/everest-server
+2021/08/30,07:03:42.749132[LogGareth][LogErro][Sys_Monitor] ----->>fork logServer ok
+
+2021/08/30,07:03:42.749317[LogGareth][LogNormal][Sys_Monitor] proName:/usr/sbin/log-server
